@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PostController;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +18,43 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/welcome',function(){
+    echo "hai";
+});
+
+Route::get('/show/{id}', function ($id) {
+    echo "nilai saya $id";
+    echo "nilai saya ".$id;
+});
+
+Route::get('/show/{id?}', function ($id=1) {
+    echo "nilai saya $id";
+    echo "nilai saya ".$id;
+});
+
+Route::get('/edit/{nama}', function ($nama) {
+    echo "nilai saya $nama";
+})->where('nama','[A-Za-z]+');
+
+Route::get('/create',function() {
+    echo "Route diakses menggunakan nama";
+})->name('tulis');
+
+Route::get('/index',function() {
+    echo "<a href='".route('tulis')."'>Akses route dengan nama </a>";
+});
+
+Route::get('/product',[ProductController::class,'index']);
+Route::get('/productshow',[ProductController::class,'show']);
+Route::get('/productshowall',[ProductController::class,'showAll']);
+
+Route::resource('posts',PostController::class);
+
+
+Route::get('/halaman',function(){
+    $title='Harry Potter';
+    $konten='Harry Potter and The Deadly Hallows: Part 2';
+    return view('konten.halaman',compact('title','konten'));
 });
