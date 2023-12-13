@@ -93,6 +93,9 @@ class PostController extends Controller
 
         //cek upload file ga?
         if ($request->hasFile('image')){
+            //delete file
+            Storage::delete('public/posts/'.$posts->image);
+
             //upload file
             $image=$request->file('image');
             $image->storeAs('public/posts/',$image->hashName());

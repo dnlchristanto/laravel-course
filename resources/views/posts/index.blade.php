@@ -24,7 +24,6 @@
                       </tr>
                     </thead>
                     <tbody>
-                        <tbody>
                             @if (count($posts)>0)
                                 @foreach ($posts as $post)
                                     <tr>
@@ -48,8 +47,6 @@
                                     <td>BELUM ADA DATA</td>
                                 </tr>
                             @endif
-
-                        </tbody>
                     </tbody>
                   </table>
             </div>
