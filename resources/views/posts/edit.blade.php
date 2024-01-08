@@ -1,15 +1,5 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <div class="container">
-        @include('layouts.header')
-        <title>EDIT POSTS</title>
-    </div>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  </head>
-  <body>
+@extends('posts.layout')
+@section('content')
     <div class="container">
         <div class="card">
             <div class="card-body">
@@ -19,22 +9,44 @@
                     <img src="{{asset('storage/posts/'.$posts->image)}}">
                     <div class="form-group">
                         <label>IMAGE</label>
-                        <input name="image" type="file" class="form-control">
+                        <input name="image" type="file" class="form-control
+                        @error('image')
+                            is-invalid
+                        @enderror" accept="image/png, image/jpg, image/jpeg">
+                        @error('image')
+                            <div class="alert alert-danger mt-2">
+                                {{$message}}
+                            </div>
+                        @enderror
                     </div>
 
                     <div class="form-group">
                         <label>TITLE</label>
-                        <input name="title" type="text" class="form-control" value="{{old('title',$posts->title)}}">
+                        <input name="title" type="text" class="form-control
+                        @error('title')
+                            is-invalid
+                        @enderror" value="{{old('title',$posts->title)}}">
+                        @error('title')
+                            <div class="alert alert-danger mt-2">
+                                {{$message}}
+                            </div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label>CONTENT</label>
-                        <textarea name="content" class="form-control">{{$posts->content}}</textarea>
+                        <textarea name="content" class="form-control
+                        @error('content')
+                            is-invalid
+                        @enderror">{{old('content',$posts->content)}}</textarea>
+                        @error('content')
+                        <div class="alert alert-danger mt-2">
+                            {{$message}}
+                        </div>
+                        @enderror
                     </div>
                     <button href="{{'posts.update'}}" type="submit" class="btn btn-primary mt-3">SUBMIT</button>
                 </form>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  </body>
-</html>
+@endsection

@@ -1,9 +1,17 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\HomeController;
 use GuzzleHttp\Promise\Create;
+use Illuminate\Routing\RouteUri;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +27,23 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/login', [LoginController::class,'index'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class,'authenticate'])->name('login.authenticate');
+//Route::get('/logout', [LoginController::class,'logout'])->middleware('auth');
+Route::post('/', function () {
+    Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('welcome');
+})->name('logout')->middleware('auth');
+Route::get('/register', [RegisterController::class,'index'])->name('register')->middleware('guest');
+Route::post('/register', [RegisterController::class,'store'])->name('register.store');
+
+Route::get('/home',[HomeController::class,'index'])->middleware('auth');
+Route::get('/administrator',[HomeController::class,'index'])->middleware('auth')->middleware('can:isAdministrator');
+Route::get('/admin',[HomeController::class,'index'])->middleware('auth')->middleware('can:isAdmin');
+Route::get('/userbiasa',[HomeController::class,'index'])->middleware('auth')->middleware('can:isUserBiasa');
 
 Route::get('/welcome',function(){
     echo "hai";
@@ -61,3 +86,11 @@ Route::get('/halaman',function(){
     $konten='Harry Potter and The Deadly Hallows: Part 2';
     return view('konten.halaman',compact('title','konten'));
 });
+
+Route::get('/kategori',[KategoriController::class,'index']);
+Route::get('/kategori/store',[KategoriController::class,'store']);
+Route::get('/kategori/update',[KategoriController::class,'update']);
+Route::get('/kategori/delete',[KategoriController::class,'delete']);
+
+Route::get('/users',[UserController::class,'index']);
+Route::get('/categories',[CategoryController::class,'index']);

@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Category extends Model
+class Phone extends Model
 {
     use HasFactory;
 
-    public function product()
+    public function user()
     {
-        return $this->hasMany(product::class);
+        return $this->belongsTo(User::class);
     }
 }
